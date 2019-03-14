@@ -1,10 +1,14 @@
 class Store {
   constructor() {
-    this.repo = []
+    this.repo = {}
   }
 
-  subscribe(fn) {
-    this.repo.push(fn)
+  subscribe(key, fn) {
+    if (this.repo[key]) {
+      this.repo[key].push(fn)
+    } else {
+      this.repo[key] = [fn]
+    }
   }
 }
 
