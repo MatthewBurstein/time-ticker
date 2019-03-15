@@ -7,13 +7,13 @@ describe("Store", () => {
     store = new Store()
   })
 
-  describe("subscribe", () => {
+  describe("add", () => {
     describe("when the key does not already exist in the repo", () => {
       it("adds the key to the repo and stores the passed function", () => {
         const mockFn = jest.fn()
         const testKey = "testKey"
 
-        store.subscribe(testKey, mockFn)
+        store.add(testKey, mockFn)
         
         expect(store.repo[testKey]).toEqual([mockFn])
       })
@@ -26,7 +26,7 @@ describe("Store", () => {
         const testKey = "testKey"
         store.repo[testKey] = [previousMockFn]
 
-        store.subscribe(testKey, mockFn)
+        store.add(testKey, mockFn)
   
         expect(store.repo[testKey]).toEqual([previousMockFn, mockFn])
       })

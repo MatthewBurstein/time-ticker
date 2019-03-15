@@ -3,7 +3,7 @@ class Store {
     this.repo = {}
   }
 
-  subscribe(key, fn) {
+  add(key, fn) {
     if (this.repo[key]) {
       this.repo[key].push(fn)
     } else {
