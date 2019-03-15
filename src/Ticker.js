@@ -1,20 +1,30 @@
+const sleep = require('./utils/sleep')
+
 class Ticker {
-  constructor(store, period) {
+  constructor(store) {
     this.store = store
-    this.period = period
+    this.runners = {};
+    Object.keys(store).forEach(key => this.runners[key] = { running: false, period: null });
   }
 
-  tick(callImmediately = true) {
-    const callFunctions = () => this.store.repo.forEach(fn => fn())
-    const cycle = () => {
-      setTimeout(() => {
-        callFunctions()
-        this.tick(false)
-      }, this.period
-    )}
+  async start(key) {
+    this.runners[key].running = true
+    while(this.isRunning(key)) {
+      this.callfunctions(key)
+      await sleep(this.runners[key].period)
+    }
+  }
 
-    if (callImmediately) {callFunctions()}
-    cycle()
+  stop(key) {
+    this.runners[key].running = false
+  }
+
+  isRunning(key) {
+    return this.runners[key].running
+  }
+
+  callFunctions(key) {
+    this.store[key].forEach(fn => fn())
   }
 }
 
