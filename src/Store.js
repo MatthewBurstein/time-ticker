@@ -10,6 +10,10 @@ class Store {
       this.repo[key] = [fn]
     }
   }
+
+  callFunctions(key) {
+    this.store[key].forEach(fn => fn())
+  }
 }
 
 module.exports = Store;
