@@ -27,7 +27,7 @@ describe("Ticker", () => {
 
   describe("start and stop functions", () => {
     beforeEach(() => {
-      mockStore.callFunctions = jest.fn()
+      mockStore.callFunctions = jest.fn(() => console.log("in callFunctions"))
       ticker.setPeriod(testPeriod)
     })
     
@@ -40,20 +40,30 @@ describe("Ticker", () => {
       expect.assertions(1)
 
       ticker.start()
-      
+
       expect(mockStore.callFunctions).toHaveBeenCalledTimes(1)
       done()
     })
 
-    it("has called each function twice after one period", () => {
+    it("has called each function twice after one period", done => {
       expect.assertions(1)
 
-      ticker.start()
-      jest.advanceTimersByTime(testPeriod)
-
-      return ticker.stop().then(() => {
+      console.log('before start')
+      ticker.start().then(() => {
+        console.log('in start then')
         expect(mockStore.callFunctions).toHaveBeenCalledTimes(2)
+        done()
       })
+      console.log('after start, before advance timers')
+      jest.advanceTimersByTime(testPeriod + 1)
+      console.log("after times")
+      ticker.running = false
+      console.log("after running = false")
+      jest.advanceTimersByTime(1)
+      console.log("before done")
+      // return ticker.stop().then(() => {
+      //   expect(mockStore.callFunctions).toHaveBeenCalledTimes(2)
+      // })
     })
     
     it("has called each function three times after two periods", () => {
