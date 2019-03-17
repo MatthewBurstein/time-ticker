@@ -6,7 +6,7 @@ jest.mock("../Store")
 jest.useFakeTimers()
 
 describe("Ticker", () => {
-  const testPeriod = 100;
+  const testPeriod = 5;
   const mockStore = {repo: {}}
   let ticker;
 
@@ -19,7 +19,7 @@ describe("Ticker", () => {
   })
 
   describe("setPeriod", () => {
-    it("sets the period of the passed key", () => {
+    it("sets the period", () => {
       ticker.setPeriod(testPeriod)
       expect(ticker.period).toEqual(testPeriod)
     })
@@ -36,13 +36,13 @@ describe("Ticker", () => {
       ticker.stop()
     })
       
-    it("calls each function once immediately", () => {
+    it("calls each function once immediately", done => {      
       expect.assertions(1)
 
       ticker.start()
-      return ticker.stop().then(() => {
-        expect(mockStore.callFunctions).toHaveBeenCalledTimes(1)
-      })
+      
+      expect(mockStore.callFunctions).toHaveBeenCalledTimes(1)
+      done()
     })
 
     it("has called each function twice after one period", () => {
@@ -50,6 +50,7 @@ describe("Ticker", () => {
 
       ticker.start()
       jest.advanceTimersByTime(testPeriod)
+
       return ticker.stop().then(() => {
         expect(mockStore.callFunctions).toHaveBeenCalledTimes(2)
       })
@@ -61,6 +62,7 @@ describe("Ticker", () => {
       ticker.start()
       jest.advanceTimersByTime(testPeriod)
       jest.advanceTimersByTime(testPeriod)
+
       return ticker.stop().then(() => {
         expect(mockStore.callFunctions).toHaveBeenCalledTimes(3)
       })
