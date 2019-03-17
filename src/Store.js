@@ -1,18 +1,14 @@
 class Store {
   constructor() {
-    this.repo = {}
+    this.repo = []
   }
 
-  add(key, fn) {
-    if (this.repo[key]) {
-      this.repo[key].push(fn)
-    } else {
-      this.repo[key] = [fn]
-    }
+  add(fn) {
+    this.repo.push(fn)
   }
 
-  callFunctions(key) {
-    this.store[key].forEach(fn => fn())
+  callFunctions() {
+    this.repo.forEach(fn => fn())
   }
 }
 
