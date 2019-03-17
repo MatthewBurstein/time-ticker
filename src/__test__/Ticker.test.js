@@ -1,4 +1,5 @@
-const Ticker = require("../Ticker.js")
+const Ticker = require("../Ticker")
+const sleep = require('../utils/sleep')
 
 jest.mock("../Store")
 
@@ -6,71 +7,63 @@ jest.useFakeTimers()
 
 describe("Ticker", () => {
   const testPeriod = 100;
-  const mockStore = require('../store');
-  let storeFunc1, storeFunc2;
-  let ticker
-
+  const mockStore = {repo: {}}
+  let ticker;
 
   beforeEach(() => {
-    ticker = new Ticker(mockStore, testPeriod)
+    ticker = new Ticker(mockStore)
   })
 
   it("is intialized with a store and a period" , () => {
-    expect(ticker.period).toEqual(100)
     expect(ticker.store).toEqual(mockStore)
   })
 
-  it("is intialized with no timer" , () => {
-    expect(ticker.timeout).toEqual(null)
+  describe("setPeriod", () => {
+    it("sets the period of the passed key", () => {
+      ticker.setPeriod(testPeriod)
+      expect(ticker.period).toEqual(testPeriod)
+    })
   })
 
-  describe("timer functiona", () => {
+  describe("start and stop functions", () => {
     beforeEach(() => {
-      storeFunc1 = jest.fn(() => console.log("storeFunction1"))
-      storeFunc2 = jest.fn()
-      mockStore.repo = [storeFunc1, storeFunc2]
+      mockStore.callFunctions = jest.fn()
+      ticker.setPeriod(testPeriod)
     })
-
+    
     afterEach(() => {
-      console.log('in aftereach')
-        storeFunc1.mockReset()
-        storeFunc2.mockReset()
+      mockStore.callFunctions.mockReset()
+      ticker.stop()
+    })
+      
+    it("calls each function once immediately", () => {
+      expect.assertions(1)
+
+      ticker.start()
+      return ticker.stop().then(() => {
+        expect(mockStore.callFunctions).toHaveBeenCalledTimes(1)
+      })
     })
 
-    describe("tick", () => {
-      it("stores the timeout", () => {
-        ticker.tick()
-        expect(typeof ticker.timeout).toBe('number')
-      })
-  
-      it("calls each function in the store once per period", () => {
-        ticker.tick()
-        expect(storeFunc1).toHaveBeenCalledTimes(1)
-        expect(storeFunc2).toHaveBeenCalledTimes(1)
-  
-        jest.advanceTimersByTime(testPeriod)
-  
-        expect(storeFunc1).toHaveBeenCalledTimes(2)
-        expect(storeFunc2).toHaveBeenCalledTimes(2)
-  
-        jest.advanceTimersByTime(testPeriod)
-        
-        expect(storeFunc1).toHaveBeenCalledTimes(3)
-        expect(storeFunc2).toHaveBeenCalledTimes(3)
+    it("has called each function twice after one period", () => {
+      expect.assertions(1)
+
+      ticker.start()
+      jest.advanceTimersByTime(testPeriod)
+      return ticker.stop().then(() => {
+        expect(mockStore.callFunctions).toHaveBeenCalledTimes(2)
       })
     })
-  
-    // describe("stop", () => {
-    //   it("stops cycling", () => {
-    //     mockStore.repo = [storeFunc1, storeFunc2]
-  
-    //     ticker.tick()
-    //     jest.advanceTimersByTime(testPeriod)
-    //     ticker.stop()
-    //     jest.advanceTimersByTime(testPeriod)
-    //     expect(storeFunc1).toHaveBeenCalledTimes(2)
-    //     expect(storeFunc2).toHaveBeenCalledTimes(2)
-    //   })
-    // })
+    
+    it("has called each function three times after two periods", () => {
+      expect.assertions(1)
+
+      ticker.start()
+      jest.advanceTimersByTime(testPeriod)
+      jest.advanceTimersByTime(testPeriod)
+      return ticker.stop().then(() => {
+        expect(mockStore.callFunctions).toHaveBeenCalledTimes(3)
+      })
+    })   
   })
 })

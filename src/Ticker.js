@@ -1,30 +1,39 @@
 const sleep = require('./utils/sleep')
 
 class Ticker {
-  constructor(store) {
+  constructor(store, period = null) {
     this.store = store
-    this.runners = {};
-    Object.keys(store).forEach(key => this.runners[key] = { running: false, period: null });
+    this.running = false
+    this.period = period
   }
 
-  async start(key) {
-    this.runners[key].running = true
-    while(this.isRunning(key)) {
-      this.callfunctions(key)
-      await sleep(this.runners[key].period)
-    }
+  start() {
+    this.running = true
+    this.process = new Promise(async (res, rej) => {
+      try {
+        while(this.isRunning()) {
+          this.store.callFunctions()
+          await sleep(this.period)
+        } 
+      } catch (e) {
+        rej(e)
+      }
+      res()
+    })
+    return this.process
   }
-
-  stop(key) {
-    this.runners[key].running = false
+  
+  stop() {
+    this.running = false
+    return this.process
   }
-
-  isRunning(key) {
-    return this.runners[key].running
+  
+  isRunning() {
+    return this.running
   }
-
-  callFunctions(key) {
-    this.store[key].forEach(fn => fn())
+  
+  setPeriod(period) {
+    this.period = period
   }
 }
 
