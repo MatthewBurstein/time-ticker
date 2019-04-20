@@ -55,6 +55,15 @@ module.exports = {
             loader: "html-loader"
           }
         ]
+      },
+      {
+        test: require.resolve('jquery'),
+        use: [
+          {
+            loader: 'expose-loader',
+            options: '$'
+          }
+        ]
       }
     ]
   }
