@@ -1,5 +1,30 @@
 $body-color: red;
 
 body {
-  color: $body-color;
+  margin: 10px;
 }
+
+.page-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .block-container {
+    background-color: blue;
+    height: 50px;
+    width: 400px;
+    margin: 0 auto;
+    display: flex;
+
+    div {
+      width: 50px;
+      height: 50px;
+      
+      &.ticker {
+        background-color: red;
+      }
+    }
+  }
+}
+  
