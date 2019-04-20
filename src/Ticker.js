@@ -1,4 +1,4 @@
-class Ticker {
+export default class Ticker {
   constructor(period = null) {
     this.store = []
     this.running = false
@@ -31,5 +31,3 @@ class Ticker {
     }
   }
 }
-
-module.exports = Ticker;

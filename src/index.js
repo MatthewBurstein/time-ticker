@@ -1,5 +1,5 @@
-const store = {}
+import Ticker from "./Ticker"
 
-const run = () => {
-  
-}
+const ticker = new Ticker()
+
+export default ticker
