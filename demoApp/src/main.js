@@ -2,7 +2,6 @@ require('../public/main.scss')
 require("../src/index.html")
 
 import ticker from "../../src/index"
-import { mod } from './utils';
 
 window.ticker = ticker
 ticker.setPeriod(1000)
@@ -18,7 +17,7 @@ const BOARD_DIMENSION = 9
 const $ = require('jquery')
 
 const state = {
-  head: [0,0],
+  body: [{x: 0, y: 0}],
   direction: ''
 }
 
@@ -31,16 +30,16 @@ $('window').ready(() => {
   const move = () => {
     switch (state.direction) {
       case 'left':
-      state.head[1] = state.head[1] === 0 ? BOARD_DIMENSION - 1 : state.head[1] - 1
+      state.body[0].x = state.body[0].x === 0 ? BOARD_DIMENSION - 1 : state.body[0].x - 1
       break;
       case 'up':
-      state.head[0] = state.head[0] === 0 ? BOARD_DIMENSION - 1 : state.head[0] - 1
+      state.body[0].y = state.body[0].y === 0 ? BOARD_DIMENSION - 1 : state.body[0].y - 1
       break;
       case 'right':
-      state.head[1] = state.head[1] === BOARD_DIMENSION - 1 ? 0 : state.head[1] + 1
+      state.body[0].x = state.body[0].x === BOARD_DIMENSION - 1 ? 0 : state.body[0].x + 1
       break;
       case 'down':
-      state.head[0] = state.head[0] === BOARD_DIMENSION - 1 ? 0 : state.head[0] + 1
+      state.body[0].y = state.body[0].y === BOARD_DIMENSION - 1 ? 0 : state.body[0].y + 1
       break;
     }
   }
@@ -51,7 +50,7 @@ $('window').ready(() => {
   }
 
   const render = () => {
-    const divIdx = state.head[0] * BOARD_DIMENSION + state.head[1]
+    const divIdx = state.body[0].y * BOARD_DIMENSION + state.body[0].x
     $('.head').removeClass('head')
     $(`.block-container :nth-child(${divIdx + 1})`).toggleClass('head')
   }
