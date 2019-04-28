@@ -3,6 +3,7 @@ require("../src/index.html")
 
 import ticker from "../../src/index"
 import {boardDimension} from './appConstants'
+import { $squareFromCoords, createBoard, randomSquare } from './boardUtils'
 
 window.ticker = ticker
 ticker.setPeriod(500)
@@ -76,11 +77,6 @@ $('window').ready(() => {
   })
 })
 
-const $squareFromCoords = ({x, y}) => {
-  const divIdx = y * boardDimension + x
-  return $(`.board :nth-child(${divIdx + 1})`)
-}
-
 const nextHead = () => {
   let {x, y} = state.body[0]
   switch (state.direction) {
@@ -98,16 +94,4 @@ const nextHead = () => {
     break;
   }
   return {x, y}
-}
-
-const createBoard = () => {
-  const $board = $('.board')
-  const arrayForItteration = Array.from({length: boardDimension ** 2})
-  const squareDiv = '<div class="block"></div>'
-  arrayForItteration.forEach(_ => $board.append(squareDiv))
-}
-
-const randomSquare = () => {
-  const randomCoord = () => Math.floor(Math.random() * (boardDimension + 1));
-  return { x: randomCoord(), y: randomCoord() }
 }
