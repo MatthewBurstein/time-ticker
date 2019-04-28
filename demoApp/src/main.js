@@ -8,10 +8,16 @@ window.ticker = ticker
 ticker.setPeriod(1000)
 
 const DIRECTIONS = {
+  // arrows
   37: 'left',
   38: 'up',
   39: 'right',
-  40: 'down'
+  40: 'down',
+  // wasd
+  65: 'left',
+  87: 'up',
+  68: 'right',
+  83: 'down'
 }
 
 const $ = require('jquery')
@@ -24,6 +30,8 @@ const state = {
 
 
 $('window').ready(() => {
+  createBoard()
+
   $('.page-container').keydown(function(e) {
     state.direction = DIRECTIONS[e.keyCode]
   })
@@ -55,7 +63,7 @@ $('window').ready(() => {
 
 const $squareFromCoords = ({x, y}) => {
   const divIdx = y * boardDimension + x
-  return $(`.block-container :nth-child(${divIdx + 1})`)
+  return $(`.board :nth-child(${divIdx + 1})`)
 }
 
 const nextHead = () => {
@@ -75,4 +83,11 @@ const nextHead = () => {
     break;
   }
   return {x, y}
+}
+
+const createBoard = () => {
+  const $board = $('.board')
+  const arrayForItteration = Array.from({length: boardDimension ** 2})
+  const squareDiv = '<div class="block"></div>'
+  arrayForItteration.forEach(_ => $board.append(squareDiv))
 }

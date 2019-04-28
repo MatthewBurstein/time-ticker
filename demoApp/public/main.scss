@@ -1,6 +1,6 @@
 $body-color: red;
-$board-width: 9;
-$box-height: 50px;
+$board-width: 30;
+$box-height: 10px;
 
 :export {
   boardWidth: $board-width;
@@ -20,7 +20,7 @@ body {
   flex-direction: column;
   justify-content: center;
 
-  .block-container {
+  .board {
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat($board-width, auto);
