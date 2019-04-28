@@ -5,16 +5,15 @@ const $ = require('jquery')
 import ticker from "../../src/index"
 import Snake from './snake'
 import Direction from './direction'
+import Food from './food'
 import { $squareFromCoords, createBoard, randomCoords } from './boardUtils'
 
 window.ticker = ticker
 ticker.setPeriod(500)
 
 const direction = new Direction()
-
 const snake = new Snake()
-
-const FOOD_PROBABILITY = 0.2
+const food = new Food()
 
 $('window').ready(() => {
   createBoard()
@@ -25,26 +24,15 @@ $('window').ready(() => {
     }
   })
 
-  const generateFood = () => {
-    if (Math.random() > 1 - FOOD_PROBABILITY) {
-      let inBody = true
-      let coords
-      while (inBody) {
-        coords = randomCoords()
-        inBody = snake.contains(coords)
-      }
-      $squareFromCoords(coords).toggleClass('food')
-    }
-  }
-
   const tick = () => {
     snake.move(direction.current)
-    generateFood()
+    food.generate(snake.coordinates)
     render()
   }
 
   const render = () => {
     renderHead()
+    renderFood()
     $('.body').removeClass('body')
     snake.body().forEach(coords => $squareFromCoords(coords).addClass('body'))
   }
@@ -62,4 +50,9 @@ $('window').ready(() => {
 const renderHead = () => {
   ['left', 'right', 'up', 'down'].forEach(dir => $(`.${dir}-arrow`).removeClass(`${dir}-arrow`))
   $squareFromCoords(snake.head()).addClass(`${direction.current}-arrow`)
+}
+
+const renderFood = () => {
+  $('.food').removeClass('food')
+  food.coordinates.forEach(coords => $squareFromCoords(coords).addClass('food'))
 }
