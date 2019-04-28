@@ -19,6 +19,7 @@ const renderer = new Renderer(snake, food, direction)
 
 $('window').ready(() => {
   let started = false;
+  let turn = 0
 
   $('#start-button').on('click', () => {
     if(!started) {
@@ -53,6 +54,10 @@ $('window').ready(() => {
 
     food.generate(snake.coordinates)
     renderer.render()
+    turn += 1
+    if (turn % 20 === 0 && ticker.period > 10) {
+      ticker.setPeriod(ticker.period - 20)
+    }
   }
 
   ticker.add(tick)
