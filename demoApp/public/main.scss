@@ -29,10 +29,13 @@ body {
       background-color: blue;
       width: $box-height;
       height: $box-height;
-      border: 1px solid black;
 
       &.head {
         background-color: red;
+      }
+
+      &.food {
+        background-color: yellow;
       }
     }
   }

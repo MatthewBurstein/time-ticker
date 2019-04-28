@@ -5,7 +5,7 @@ import ticker from "../../src/index"
 import {boardDimension} from './appConstants'
 
 window.ticker = ticker
-ticker.setPeriod(1000)
+ticker.setPeriod(500)
 
 const DIRECTIONS = {
   // arrows
@@ -20,11 +20,13 @@ const DIRECTIONS = {
   83: 'down'
 }
 
+const FOOD_PROBABILITY = 0.2
+
 const $ = require('jquery')
 
 const state = {
   body: [{ x: 3, y: 0 }, { x: 2, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 0 }],
-  direction: '',
+  direction: 'right',
   maxLength: 4
 }
 
@@ -41,8 +43,21 @@ $('window').ready(() => {
     if (state.body.length > state.maxLength) { state.body.pop() }
   }
 
+  const generateFood = () => {
+    if (Math.random() > 1 - FOOD_PROBABILITY) {
+      let inBody = true
+      let square
+      while (inBody) {
+        square = randomSquare()
+        inBody = state.body.find(bodySquare => bodySquare.x === square.x && bodySquare.y === square.y)
+      }
+      $squareFromCoords(square).toggleClass('food')
+    }
+  }
+
   const tick = () => {
     move()
+    generateFood()
     render()
   }
 
@@ -90,4 +105,9 @@ const createBoard = () => {
   const arrayForItteration = Array.from({length: boardDimension ** 2})
   const squareDiv = '<div class="block"></div>'
   arrayForItteration.forEach(_ => $board.append(squareDiv))
+}
+
+const randomSquare = () => {
+  const randomCoord = () => Math.floor(Math.random() * (boardDimension + 1));
+  return { x: randomCoord(), y: randomCoord() }
 }
