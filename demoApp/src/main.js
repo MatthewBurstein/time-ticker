@@ -30,6 +30,11 @@ $('window').ready(() => {
 
   const tick = () => {
     snake.move(direction.current)
+
+    if (food.contains(snake.head())) {
+      snake.consume(food)
+    }
+
     food.generate(snake.coordinates)
     renderer.render()
   }

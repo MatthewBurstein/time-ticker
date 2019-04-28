@@ -18,12 +18,17 @@ export default class Snake {
   contains(newCoords) {
     this.coordinates.find(bodyCoords => {
       return bodyCoords.x === newCoords.x && bodyCoords.y === newCoords.y
-    })
+    }) !== undefined
   }
 
   move(direction) {
     this._add(this._getNextHead(direction))
     if (this._isComplete()) { this._popTail() }
+  }
+
+  consume(food) {
+    this.maxLength += 1
+    food.remove(this.head())
   }
 
   _add(newHead) {

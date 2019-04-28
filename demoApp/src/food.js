@@ -14,9 +14,22 @@ export default class Food {
         coords = randomCoords()
         excluded = [...occupied, ...this.coordinates].find(excludedCoords => {
           return excludedCoords.x === coords.x && excludedCoords.y === coords.y
-        })
+        }) !== undefined
       }
       this.coordinates.push(coords)
     }
+  }
+
+  contains(testCoords) {
+    return this.coordinates.find(foodCoords => {
+      return foodCoords.x === testCoords.x && foodCoords.y === testCoords.y
+    }) !== undefined
+  }
+
+  remove(removeCoords) {
+    const idx = this.coordinates.findIndex(foodCoords => {
+      return foodCoords.x === removeCoords.x && foodCoords.y === removeCoords.y
+    })
+    this.coordinates.splice(idx, 1)
   }
 }
