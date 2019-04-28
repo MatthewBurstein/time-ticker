@@ -12,18 +12,18 @@ export default class Food {
       let coords
       while (excluded) {
         coords = randomCoords()
-        excluded = [...occupied, ...this.coordinates].find(excludedCoords => {
+        excluded = [...occupied, ...this.coordinates].some(excludedCoords => {
           return excludedCoords.x === coords.x && excludedCoords.y === coords.y
-        }) !== undefined
+        })
       }
       this.coordinates.push(coords)
     }
   }
 
   contains(testCoords) {
-    return this.coordinates.find(foodCoords => {
+    return this.coordinates.some(foodCoords => {
       return foodCoords.x === testCoords.x && foodCoords.y === testCoords.y
-    }) !== undefined
+    })
   }
 
   remove(removeCoords) {

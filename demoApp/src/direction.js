@@ -12,7 +12,7 @@ export default class Direction {
       68: 'right',
       83: 'down'
     }
-    this.current = ''
+    this.current = 'right'
   }
 
   setCurrent(keyCode) {

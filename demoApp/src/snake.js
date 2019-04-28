@@ -14,11 +14,10 @@ export default class Snake {
     return this.coordinates[0]
   }
 
-
   contains(newCoords) {
-    this.coordinates.find(bodyCoords => {
+    this.coordinates.some(bodyCoords => {
       return bodyCoords.x === newCoords.x && bodyCoords.y === newCoords.y
-    }) !== undefined
+    })
   }
 
   move(direction) {
@@ -29,6 +28,12 @@ export default class Snake {
   consume(food) {
     this.maxLength += 1
     food.remove(this.head())
+  }
+
+  isDead() {
+    return this.body().some(bodyCoords => {
+      return bodyCoords.x === this.head().x && bodyCoords.y === this.head().y
+    })
   }
 
   _add(newHead) {

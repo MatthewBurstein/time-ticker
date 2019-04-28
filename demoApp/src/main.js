@@ -20,6 +20,17 @@ const renderer = new Renderer(snake, food, direction)
 $('window').ready(() => {
   let started = false;
 
+  $('#start-button').on('click', () => {
+    if(!started) {
+      ticker.start()
+      started = true
+    }
+  })
+
+  $('#stop-button').on('click', () => {
+    ticker.stop()
+  })
+
   createBoard()
 
   $('.page-container').keydown(function(e) {
@@ -31,6 +42,11 @@ $('window').ready(() => {
   const tick = () => {
     snake.move(direction.current)
 
+    if(snake.isDead()) {
+      ticker.stop()
+      return alert('you lose')
+    }
+
     if (food.contains(snake.head())) {
       snake.consume(food)
     }
@@ -40,14 +56,4 @@ $('window').ready(() => {
   }
 
   ticker.add(tick)
-
-  $('#start-button').on('click', () => {
-    if(!started) {
-      ticker.start()
-      started = true
-    }
-  })
-  $('#stop-button').on('click', () => {
-    ticker.stop()
-  })
 })
