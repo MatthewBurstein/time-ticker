@@ -18,6 +18,8 @@ const food = new Food()
 const renderer = new Renderer(snake, food, direction)
 
 $('window').ready(() => {
+  let started = false;
+
   createBoard()
 
   $('.page-container').keydown(function(e) {
@@ -35,7 +37,10 @@ $('window').ready(() => {
   ticker.add(tick)
 
   $('#start-button').on('click', () => {
-    ticker.start()
+    if(!started) {
+      ticker.start()
+      started = true
+    }
   })
   $('#stop-button').on('click', () => {
     ticker.stop()
