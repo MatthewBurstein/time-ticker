@@ -12,7 +12,7 @@ export const createBoard = () => {
   arrayForItteration.forEach(_ => $board.append(squareDiv))
 }
 
-export const randomSquare = () => {
+export const randomCoords = () => {
   const randomCoord = () => Math.floor(Math.random() * (boardDimension + 1));
   return { x: randomCoord(), y: randomCoord() }
 }

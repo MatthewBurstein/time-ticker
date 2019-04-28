@@ -1,9 +1,11 @@
 require('../public/main.scss')
 require("../src/index.html")
+const $ = require('jquery')
 
 import ticker from "../../src/index"
+import Snake from './snake'
 import {boardDimension} from './appConstants'
-import { $squareFromCoords, createBoard, randomSquare } from './boardUtils'
+import { $squareFromCoords, createBoard, randomCoords } from './boardUtils'
 
 window.ticker = ticker
 ticker.setPeriod(500)
@@ -21,12 +23,11 @@ const DIRECTIONS = {
   83: 'down'
 }
 
+const snake = new Snake()
+
 const FOOD_PROBABILITY = 0.2
 
-const $ = require('jquery')
-
 const state = {
-  body: [{ x: 3, y: 0 }, { x: 2, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 0 }],
   direction: 'right',
   maxLength: 4
 }
@@ -39,32 +40,27 @@ $('window').ready(() => {
     state.direction = DIRECTIONS[e.keyCode]
   })
 
-  const move = () => {
-    state.body.unshift(nextHead())
-    if (state.body.length > state.maxLength) { state.body.pop() }
-  }
-
   const generateFood = () => {
     if (Math.random() > 1 - FOOD_PROBABILITY) {
       let inBody = true
-      let square
+      let coords
       while (inBody) {
-        square = randomSquare()
-        inBody = state.body.find(bodySquare => bodySquare.x === square.x && bodySquare.y === square.y)
+        coords = randomCoords()
+        inBody = snake.contains(coords)
       }
-      $squareFromCoords(square).toggleClass('food')
+      $squareFromCoords(coords).toggleClass('food')
     }
   }
 
   const tick = () => {
-    move()
+    snake.move(state.direction)
     generateFood()
     render()
   }
 
   const render = () => {
     $('.head').removeClass('head')
-    state.body.forEach(coords => $squareFromCoords(coords).addClass('head'))
+    snake.coordinates.forEach(coords => $squareFromCoords(coords).addClass('head'))
   }
 
   ticker.add(tick)
@@ -76,22 +72,3 @@ $('window').ready(() => {
     ticker.stop()
   })
 })
-
-const nextHead = () => {
-  let {x, y} = state.body[0]
-  switch (state.direction) {
-      case 'left':
-      x = state.body[0].x === 0 ? boardDimension - 1 : state.body[0].x - 1
-    break;
-      case 'up':
-      y = state.body[0].y === 0 ? boardDimension - 1 : state.body[0].y - 1
-    break;
-      case 'right':
-      x = state.body[0].x === boardDimension - 1 ? 0 : state.body[0].x + 1
-    break;
-      case 'down':
-      y = state.body[0].y === boardDimension - 1 ? 0 : state.body[0].y + 1
-    break;
-  }
-  return {x, y}
-}
