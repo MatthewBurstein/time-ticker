@@ -5,7 +5,6 @@ const $ = require('jquery')
 import ticker from "../../src/index"
 import Snake from './snake'
 import Direction from './direction'
-import {boardDimension} from './appConstants'
 import { $squareFromCoords, createBoard, randomCoords } from './boardUtils'
 
 window.ticker = ticker
@@ -45,8 +44,9 @@ $('window').ready(() => {
   }
 
   const render = () => {
-    $('.head').removeClass('head')
-    snake.coordinates.forEach(coords => $squareFromCoords(coords).addClass('head'))
+    renderHead()
+    $('.body').removeClass('body')
+    snake.body().forEach(coords => $squareFromCoords(coords).addClass('body'))
   }
 
   ticker.add(tick)
@@ -58,3 +58,8 @@ $('window').ready(() => {
     ticker.stop()
   })
 })
+
+const renderHead = () => {
+  ['left', 'right', 'up', 'down'].forEach(dir => $(`.${dir}-arrow`).removeClass(`${dir}-arrow`))
+  $squareFromCoords(snake.head()).addClass(`${direction.current}-arrow`)
+}

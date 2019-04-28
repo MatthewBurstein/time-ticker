@@ -1,6 +1,6 @@
 $body-color: red;
 $board-width: 30;
-$box-height: 10px;
+$square-size: 10px;
 
 :export {
   boardWidth: $board-width;
@@ -27,11 +27,52 @@ body {
 
     div {
       background-color: blue;
-      width: $box-height;
-      height: $box-height;
+      width: $square-size;
+      height: $square-size;
 
-      &.head {
+      &.body {
         background-color: red;
+      }
+
+      @mixin arrow() {
+        content:'';
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
+
+      @mixin horizontal-arrow() {
+        border-top: solid ($square-size / 2) transparent;
+        border-bottom: solid ($square-size / 2) transparent;
+      }
+
+      @mixin vertical-arrow() {
+        border-left: solid ($square-size / 2) transparent;
+        border-right: solid ($square-size / 2) transparent;
+      }
+
+      &.down-arrow::after {
+        @include arrow();
+        @include vertical-arrow();
+        border-top: solid $square-size red;
+      }
+
+      &.up-arrow:after {
+        @include arrow();
+        @include vertical-arrow();
+        border-bottom: solid $square-size red;
+      }
+
+      &.left-arrow:after {
+        @include arrow();
+        @include horizontal-arrow();
+        border-right: solid $square-size red;
+      }
+
+      &.right-arrow:after {
+        @include arrow();
+        @include horizontal-arrow();
+        border-left: solid $square-size red;
       }
 
       &.food {
