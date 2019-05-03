@@ -13,6 +13,6 @@ export const createBoard = () => {
 }
 
 export const randomCoords = () => {
-  const randomCoord = () => Math.floor(Math.random() * (boardDimension + 1));
+  const randomCoord = () => Math.floor(Math.random() * (boardDimension));
   return { x: randomCoord(), y: randomCoord() }
 }
