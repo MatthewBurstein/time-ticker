@@ -35,12 +35,11 @@ $('window').ready(() => {
   createBoard()
 
   $('.page-container').keydown(function(e) {
-    if (direction.isValid(e.keyCode)) {
-      direction.setCurrent(e.keyCode)
-    }
+    direction.setPending(e.keyCode)
   })
 
   const tick = () => {
+    direction.confirmPendingFromCurrent()
     snake.move(direction.current)
 
     if(snake.isDead()) {
@@ -53,11 +52,14 @@ $('window').ready(() => {
     }
 
     food.generate(snake.coordinates)
+
     renderer.render()
+
     turn += 1
     if (turn % 20 === 0 && ticker.period > 10) {
       ticker.setPeriod(Math.ceil(ticker.period * 0.9))
     }
+
   }
 
   ticker.add(tick)

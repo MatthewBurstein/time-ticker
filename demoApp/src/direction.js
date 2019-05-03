@@ -15,17 +15,27 @@ export default class Direction {
     this.current = 'right'
   }
 
-  setCurrent(keyCode) {
-    this.current = this.dict[keyCode]
+  confirmPendingFromCurrent(keyCode) {
+    if (this.pending && this._isPendingValidDirection()) {
+      this.current = this.pending
+    }
   }
 
-  isValid(keyCode) {
-    if (!this.dict.hasOwnProperty(keyCode)) { return false }
+  setPending(keyCode) {
+    if (this._isValidKey(keyCode)) {
+      this.pending = this.dict[keyCode]
+    }
+  }
 
-    if (this.current === 'left' && this.dict[keyCode] === 'right')  { return false }
-    if (this.current === 'right' && this.dict[keyCode] === 'left')  { return false }
-    if (this.current === 'up' && this.dict[keyCode] === 'down')  { return false }
-    if (this.current === 'down' && this.dict[keyCode] === 'up')  { return false }
+  _isValidKey(keyCode) {
+    return this.dict.hasOwnProperty(keyCode)
+  }
+
+  _isPendingValidDirection() {
+    if (this.current === 'left' && this.pending === 'right')  { return false }
+    if (this.current === 'right' && this.pending === 'left')  { return false }
+    if (this.current === 'up' && this.pending === 'down')  { return false }
+    if (this.current === 'down' && this.pending === 'up')  { return false }
 
     return true
   }
