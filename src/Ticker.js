@@ -10,12 +10,12 @@ export default class Ticker {
     this.running = true
     this._itterate()
   }
-  
+
   stop() {
     this.running = false
     clearTimeout(this.process)
   }
-  
+
   setPeriod(period) {
     this.period = period
   }
@@ -25,7 +25,7 @@ export default class Ticker {
   }
 
   _itterate() {
-    if(this.running) {
+    if (this.running) {
       this.store.forEach(fn => fn())
       this.process = setTimeout(() => this._itterate(), this.period)
     }

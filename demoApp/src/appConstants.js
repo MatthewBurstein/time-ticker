@@ -1,3 +1,4 @@
 import constants from '../public/main.scss'
 
-export const boardDimension = parseInt(constants.boardWidth)
+// boardDimension
+export default parseInt(constants.boardWidth, 10)

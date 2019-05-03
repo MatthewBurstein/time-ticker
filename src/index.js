@@ -1,4 +1,4 @@
-import Ticker from "./Ticker"
+import Ticker from './Ticker'
 
 const ticker = new Ticker()
 

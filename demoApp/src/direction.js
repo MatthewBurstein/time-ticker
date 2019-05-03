@@ -10,12 +10,12 @@ export default class Direction {
       65: 'left',
       87: 'up',
       68: 'right',
-      83: 'down'
+      83: 'down',
     }
     this.current = 'right'
   }
 
-  confirmPendingFromCurrent(keyCode) {
+  confirmPendingFromCurrent() {
     if (this.pending && this._isPendingValidDirection()) {
       this.current = this.pending
     }
@@ -28,14 +28,14 @@ export default class Direction {
   }
 
   _isValidKey(keyCode) {
-    return this.dict.hasOwnProperty(keyCode)
+    return !!this.dict[keyCode]
   }
 
   _isPendingValidDirection() {
-    if (this.current === 'left' && this.pending === 'right')  { return false }
-    if (this.current === 'right' && this.pending === 'left')  { return false }
-    if (this.current === 'up' && this.pending === 'down')  { return false }
-    if (this.current === 'down' && this.pending === 'up')  { return false }
+    if (this.current === 'left' && this.pending === 'right') { return false }
+    if (this.current === 'right' && this.pending === 'left') { return false }
+    if (this.current === 'up' && this.pending === 'down') { return false }
+    if (this.current === 'down' && this.pending === 'up') { return false }
 
     return true
   }

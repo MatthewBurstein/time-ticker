@@ -1,4 +1,5 @@
-import { boardDimension } from './appConstants'
+import boardDimension from './appConstants'
+import { areCoordsInArray } from './boardUtils'
 
 export default class Snake {
   constructor() {
@@ -14,9 +15,7 @@ export default class Snake {
   }
 
   contains(newCoords) {
-    this.coordinates.some(bodyCoords => {
-      return bodyCoords.x === newCoords.x && bodyCoords.y === newCoords.y
-    })
+    return areCoordsInArray(newCoords, this.coordinates)
   }
 
   move(direction) {
@@ -34,9 +33,7 @@ export default class Snake {
   }
 
   isDead() {
-    return this.body().some(bodyCoords => {
-      return bodyCoords.x === this.head().x && bodyCoords.y === this.head().y
-    })
+    return areCoordsInArray(this.head(), this.body())
   }
 
   _isTailPendingGrowthCoordinate() {
@@ -60,21 +57,22 @@ export default class Snake {
   }
 
   _getNextHead(direction) {
-    let {x, y} = this.head()
+    let { x, y } = this.head()
     switch (direction) {
       case 'left':
         x = this.head().x === 0 ? boardDimension - 1 : this.head().x - 1
-        break;
+        break
       case 'up':
         y = this.head().y === 0 ? boardDimension - 1 : this.head().y - 1
-        break;
+        break
       case 'right':
         x = this.head().x === boardDimension - 1 ? 0 : this.head().x + 1
-        break;
+        break
       case 'down':
         y = this.head().y === boardDimension - 1 ? 0 : this.head().y + 1
-        break;
+        break
+      default:
     }
-    return {x, y}
+    return { x, y }
   }
 }

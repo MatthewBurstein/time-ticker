@@ -1,13 +1,13 @@
-require('../public/main.scss')
-require("../src/index.html")
-const $ = require('jquery')
-
-import ticker from "../../src/index"
+import ticker from '../../src/index'
 import Snake from './snake'
 import Direction from './direction'
 import Food from './food'
 import Renderer from './renderer'
 import { createBoard } from './boardUtils'
+
+require('../public/main.scss')
+require('../src/index.html')
+const $ = require('jquery')
 
 window.ticker = ticker
 ticker.setPeriod(500)
@@ -18,11 +18,11 @@ const food = new Food()
 const renderer = new Renderer(snake, food, direction)
 
 $('window').ready(() => {
-  let started = false;
+  let started = false
   let turn = 0
 
   $('#start-button').on('click', () => {
-    if(!started) {
+    if (!started) {
       ticker.start()
       started = true
     }
@@ -34,7 +34,7 @@ $('window').ready(() => {
 
   createBoard()
 
-  $('.page-container').keydown(function(e) {
+  $('.page-container').keydown((e) => {
     direction.setPending(e.keyCode)
   })
 
@@ -42,7 +42,7 @@ $('window').ready(() => {
     direction.confirmPendingFromCurrent()
     snake.move(direction.current)
 
-    if(snake.isDead()) {
+    if (snake.isDead()) {
       ticker.stop()
       return alert('you lose')
     }
@@ -59,7 +59,6 @@ $('window').ready(() => {
     if (turn % 20 === 0 && ticker.period > 10) {
       ticker.setPeriod(Math.ceil(ticker.period * 0.9))
     }
-
   }
 
   ticker.add(tick)

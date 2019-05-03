@@ -1,4 +1,5 @@
-import { randomCoords } from './boardUtils'
+import { randomCoords, areCoordsInArray } from './boardUtils'
+
 
 export default class Food {
   constructor() {
@@ -9,27 +10,22 @@ export default class Food {
   generate(occupied) {
     if (Math.random() < this.probability) {
       let excluded = true
+      const excludedCoords = [...occupied, ...this.coordinates]
       let coords
       while (excluded) {
         coords = randomCoords()
-        excluded = [...occupied, ...this.coordinates].some(excludedCoords => {
-          return excludedCoords.x === coords.x && excludedCoords.y === coords.y
-        })
+        excluded = areCoordsInArray(coords, excludedCoords)
       }
       this.coordinates.push(coords)
     }
   }
 
   contains(testCoords) {
-    return this.coordinates.some(foodCoords => {
-      return foodCoords.x === testCoords.x && foodCoords.y === testCoords.y
-    })
+    return this.coordinates.some(foodCoords => foodCoords.x === testCoords.x && foodCoords.y === testCoords.y)
   }
 
   remove(removeCoords) {
-    const idx = this.coordinates.findIndex(foodCoords => {
-      return foodCoords.x === removeCoords.x && foodCoords.y === removeCoords.y
-    })
+    const idx = this.coordinates.findIndex(foodCoords => foodCoords.x === removeCoords.x && foodCoords.y === removeCoords.y)
     this.coordinates.splice(idx, 1)
   }
 }
