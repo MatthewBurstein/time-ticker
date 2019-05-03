@@ -1,6 +1,9 @@
 $body-color: red;
 $board-width: 30;
 $square-size: 10px;
+$square-color: #4f49b0;
+$snake-color: #f51261;
+$food-color: #f2d07b;
 
 :export {
   boardWidth: $board-width;
@@ -26,12 +29,12 @@ body {
     grid-template-columns: repeat($board-width, auto);
 
     div {
-      background-color: blue;
+      background-color: $square-color;
       width: $square-size;
       height: $square-size;
 
       &.body {
-        background-color: red;
+        background-color: $snake-color;
       }
 
       @mixin arrow() {
@@ -54,29 +57,29 @@ body {
       &.down-arrow::after {
         @include arrow();
         @include vertical-arrow();
-        border-top: solid $square-size red;
+        border-top: solid $square-size $snake-color;
       }
 
       &.up-arrow:after {
         @include arrow();
         @include vertical-arrow();
-        border-bottom: solid $square-size red;
+        border-bottom: solid $square-size $snake-color;
       }
 
       &.left-arrow:after {
         @include arrow();
         @include horizontal-arrow();
-        border-right: solid $square-size red;
+        border-right: solid $square-size $snake-color;
       }
 
       &.right-arrow:after {
         @include arrow();
         @include horizontal-arrow();
-        border-left: solid $square-size red;
+        border-left: solid $square-size $snake-color;
       }
 
       &.food {
-        background-color: yellow;
+        background-color: $food-color;
       }
     }
   }
