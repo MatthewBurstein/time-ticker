@@ -3,7 +3,6 @@ import { boardDimension } from './appConstants'
 export default class Snake {
   constructor() {
     this.coordinates = [{ x: 2, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 0 }]
-    this.maxLength = 3
   }
 
   body() {
@@ -22,11 +21,15 @@ export default class Snake {
 
   move(direction) {
     this._add(this._getNextHead(direction))
-    if (this._isComplete()) { this._popTail() }
+    if (this._isTailPendingGrowthCoordinate()) {
+      this._tail().isPendingGrowthCoordinate = false
+    } else {
+      this._popTail()
+    }
   }
 
   consume(food) {
-    this.maxLength += 1
+    this._setIsPendingGrowthCoordinate()
     food.remove(this.head())
   }
 
@@ -36,18 +39,21 @@ export default class Snake {
     })
   }
 
+  _isTailPendingGrowthCoordinate() {
+    return !!this.coordinates[this.coordinates.length - 1].isPendingGrowthCoordinate
+  }
+
+  _tail() {
+    return this.coordinates[this.coordinates.length - 1]
+  }
+
+  _setIsPendingGrowthCoordinate() {
+    this.head().isPendingGrowthCoordinate = true
+  }
+
   _add(newHead) {
     this.coordinates.unshift(newHead)
   }
-
-  _isComplete() {
-    return this._currentLength() > this.maxLength
-  }
-
-  _currentLength() {
-    return this.coordinates.length
-  }
-
 
   _popTail() {
     this.coordinates.pop()
