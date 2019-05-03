@@ -56,7 +56,7 @@ $('window').ready(() => {
     renderer.render()
     turn += 1
     if (turn % 20 === 0 && ticker.period > 10) {
-      ticker.setPeriod(ticker.period - 20)
+      ticker.setPeriod(Math.ceil(ticker.period * 0.9))
     }
   }
 
