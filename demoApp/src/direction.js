@@ -1,6 +1,6 @@
 export default class Direction {
   constructor() {
-    this.dict = {
+    this.dict = Object.freeze({
       // arrows
       37: 'left',
       38: 'up',
@@ -11,7 +11,7 @@ export default class Direction {
       87: 'up',
       68: 'right',
       83: 'down',
-    }
+    })
     this.current = 'right'
   }
 

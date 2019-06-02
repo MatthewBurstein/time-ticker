@@ -21,7 +21,7 @@ export default class Food {
   }
 
   contains(testCoords) {
-    return this.coordinates.some(foodCoords => foodCoords.x === testCoords.x && foodCoords.y === testCoords.y)
+    return areCoordsInArray(testCoords, this.coordinates)
   }
 
   remove(removeCoords) {

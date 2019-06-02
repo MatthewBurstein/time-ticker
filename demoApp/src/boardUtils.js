@@ -7,9 +7,9 @@ export const $squareFromCoords = ({ x, y }) => {
 
 export const createBoard = () => {
   const $board = $('.board')
+  const sqaure = '<div class="block"></div>'
   const arrayForItteration = Array.from({ length: boardDimension ** 2 })
-  const squareDiv = '<div class="block"></div>'
-  arrayForItteration.forEach(_ => $board.append(squareDiv))
+  arrayForItteration.forEach(_ => $board.append(sqaure))
 }
 
 export const randomCoords = () => {
@@ -17,4 +17,6 @@ export const randomCoords = () => {
   return { x: randomCoord(), y: randomCoord() }
 }
 
-export const areCoordsInArray = (testCoords, arrayOfCoords) => arrayOfCoords.some(arrayCoords => arrayCoords.x === testCoords.x && arrayCoords.y === testCoords.y)
+export const areCoordsInArray = (testCoords, arrayOfCoords) => arrayOfCoords.some(arrayCoords => {
+  return arrayCoords.x === testCoords.x && arrayCoords.y === testCoords.y
+})
