@@ -1,4 +1,4 @@
-const Ticker = require('../Ticker')
+import Ticker from '../Ticker'
 
 jest.useFakeTimers()
 

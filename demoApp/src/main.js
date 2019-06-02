@@ -5,9 +5,9 @@ import Food from './food'
 import Renderer from './renderer'
 import { createBoard } from './boardUtils'
 
-require('../public/main.scss')
-require('../src/index.html')
-const $ = require('jquery')
+import '../public/main.scss'
+import '../src/index.html'
+import $ from 'jquery'
 
 window.ticker = ticker
 ticker.setPeriod(500)
